@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+ 
+}
+
+body{
+ background: url("/7082434.jpg");
+ background-size: cover;
+   background-position: center; /* center the image */
+  background-repeat: no-repeat;
+  min-height: 100vh;
+ 
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
