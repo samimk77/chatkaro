@@ -14,7 +14,7 @@ app.use(cookieparser());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOption = {
-    origin: "http://localhost:5173",
+    origin: "https://chat-application-samimkausar240-6708s-projects.vercel.app/",
     credentials: true
 }
 app.use(cors(corsOption));
