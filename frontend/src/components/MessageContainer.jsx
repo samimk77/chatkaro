@@ -12,9 +12,9 @@ const MessageContainer = () => {
 
   const dispatch=useDispatch();
 
-  // useEffect(()=>{
-  //   return ()=>dispatch(setSelectedUser(null));
-  // },[])
+    useEffect(()=>{
+     return ()=>dispatch(setSelectedUser(null));
+   },[])
   
   return (
 

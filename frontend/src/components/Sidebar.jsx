@@ -52,7 +52,10 @@ const handleSearch = (e) => {
 
       //logout krne ke baad login page pe redirect krjao
       navigate("/login");
-      dispatch(setAuthUser(null))
+       dispatch(setAuthUser(null));
+        dispatch(setSelectedUser(null));  // ✅ add this
+        dispatch(setMessages([]));        // ✅ add this
+        localStorage.removeItem("authUser"); // ✅ add this
     } catch (error) {
       console.log(error);
     }

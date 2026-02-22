@@ -11,7 +11,7 @@ const useGetRealTimeMessage = () => {
   useEffect(() => {
     //actual msg   //any variable name
     socket?.on("newMessage", (newMsg) => {
-      dispatch(setMessages([...messages, newMsg]));
+dispatch(setMessages([...(messages || []), newMsg]));
     });
   }, [socket, setMessages, messages]);
 };
