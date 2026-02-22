@@ -30,6 +30,7 @@ app.use('/api/v1/user', userRoutes); // ✅ only need to register once
 const messageRoutes = require("./routes/messageRoute");
 app.use("/api/v1/message", messageRoutes);
 
+
 // ✅ listen on server (not app) so socket.io works
 server.listen(PORT, () => {
     console.log(`app running on port ${PORT}`);
