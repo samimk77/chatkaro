@@ -14,7 +14,10 @@ app.use(cookieparser());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOption = {
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        "https://chatkaro-frontend.vercel.app"
+    ],
     credentials: true
 }
 app.use(cors(corsOption));
