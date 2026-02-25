@@ -94,18 +94,22 @@ exports.login=async(req,res)=>{
         const token=await jwt.sign(tokenData,process.env.JWT_SECRET,{expiresIn:"1d"})
         //now store this token in cookie
 
-        const options={
-            expiresIn:new Date(Date.now()+1*24*60*60*1000),
-            httpOnly:true
-        }
-        return res.status(200).cookie("token",token,options).json({
-            _id:user._id,
-            username:user.username,
-            fullName:user.fullName,
-            profilePhoto:user.profilePhoto,
-            message:"User Loggedin Successfully"
-
-        });
+     const options = {
+    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    httpOnly: true,
+    sameSite: "None",   // ⭐ REQUIRED for Vercel → Render
+    secure: true        // ⭐ REQUIRED for HTTPS
+};
+      return res
+  .status(200)
+  .cookie("token", token, options)
+  .json({
+    _id:user._id,
+    username:user.username,
+    fullName:user.fullName,
+    profilePhoto:user.profilePhoto,
+    message:"User Loggedin Successfully"
+  });
         
     }
     catch(error){
@@ -125,11 +129,17 @@ exports.logout=(req,res)=>{  //isme time nahi  lagrha toh async use nahi krege
   
     try{
    
-    return res.status(200)
-    .clearCookie("token").json({
-        success:true,
-        message:"User logged out successfully"
-    })
+return res
+  .status(200)
+  .clearCookie("token",{
+    httpOnly:true,
+    sameSite:"None",
+    secure:true
+  })
+  .json({
+    success:true,
+    message:"User logged out successfully"
+  });
 
     }
     catch(error){
