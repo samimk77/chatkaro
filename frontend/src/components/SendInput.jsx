@@ -19,7 +19,7 @@ const SendInput = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/message/send/${selectedUser?._id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/message/send/${selectedUser?._id}`,
         { message },
         {
           headers: {

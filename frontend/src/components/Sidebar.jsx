@@ -46,7 +46,7 @@ const handleSearch = (e) => {
   const handleLogout = async () => {
     try {
       //axios with credential yha pe zaruri nhi coz middleware nhi pass krrhe isme
-      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`);
       console.log(res);
       toast.success(res.data.message);
 

@@ -14,25 +14,22 @@ const App = () => {
  const {socket} =useSelector(store=>store.socket)
   const dispatch =useDispatch();
 
-  useEffect(()=>{
-    if(authUser){
-      const socket = io("http://localhost:8080" , {
-        query:{
-          userId:authUser._id
-        }
-      });
-      dispatch(setSocket(socket))
+useEffect(()=>{
+  if(authUser && !socket){
+    const newSocket = io(import.meta.env.VITE_BACKEND_URL,{
+      query:{ userId:authUser._id },
+      withCredentials:true
+    });
 
-      socket.on("getOnlineUsers",(onlineUsers)=>{
-        dispatch(setOnlineUsers(onlineUsers))
-      });
+    dispatch(setSocket(newSocket));
 
-      //cleanup
-      return()=>socket.close(); //dissconnect wala call hoga
-    
-    }
-  
-  },[authUser])
+    newSocket.on("getOnlineUsers",(onlineUsers)=>{
+      dispatch(setOnlineUsers(onlineUsers));
+    });
+
+    return ()=> newSocket.close();
+  }
+},[authUser]);
 
   return (
   <Routes>
