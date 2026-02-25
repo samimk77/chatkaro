@@ -18,15 +18,6 @@ const io = new Server(server, {
 const getReceiverSocketId = (receiverId)=>{
   return userSocketMap[receiverId];
 }
-
-
-
-
-
-
-
-
-
 const userSocketMap={};  //{userId->socketid} key value pair
 
 io.on("connection", (socket) => {
