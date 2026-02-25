@@ -15,7 +15,7 @@ import {
 
   const persistConfig = {
     key: 'root',
-    version: 1,
+    blacklist: ["socket"],   // ⭐ ADD THIS LINE
     storage,
   }
 
