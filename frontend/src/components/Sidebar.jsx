@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { setAuthUser, setOtherUsers } from "../redux/userSlice";
-
+import { setSelectedUser } from "../redux/userSlice";
+import { setMessages } from "../redux/messageSlice";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -46,7 +47,10 @@ const handleSearch = (e) => {
   const handleLogout = async () => {
     try {
       //axios with credential yha pe zaruri nhi coz middleware nhi pass krrhe isme
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`,
+          { withCredentials: true }
+      );
+      
       console.log(res);
       toast.success(res.data.message);
 
