@@ -7,6 +7,27 @@ exports.sendMessage=async(req,res)=>{
         const senderId=req.id;
         const receiverId=req.params.id;
         const {message}=req.body;
+        
+        let mediaUrl = null;
+        let mediaType = null;
+
+        if (req.file) {
+            mediaUrl = req.file.path; // Cloudinary URL is returned in path
+            // Cloudinary auto sets resource_type to 'image', 'video', or 'raw'
+            // We can infer a simple type for the frontend:
+            if (req.file.mimetype.startsWith('image/')) {
+                mediaType = 'image';
+            } else if (req.file.mimetype.startsWith('video/')) {
+                mediaType = 'video';
+            } else {
+                mediaType = 'document';
+            }
+        }
+        
+        // Ensure either message or media is present
+        if (!message && !mediaUrl) {
+            return res.status(400).json({ message: "Cannot send an empty message" });
+        }
 
         let gotConversation=await Conversation.findOne({
             participants:{$all :[senderId,receiverId]}
@@ -19,7 +40,9 @@ exports.sendMessage=async(req,res)=>{
         const newMessage=await Message.create({
             senderId,
             receiverId,
-            message
+            message: message || "",
+            mediaUrl,
+            mediaType
         })
 
         //agar msg aya toh usko exisiting messages me add krdo

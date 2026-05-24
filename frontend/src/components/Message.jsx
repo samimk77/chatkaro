@@ -41,7 +41,29 @@ console.log("auth user",authUser);
         <div className="chat-header ">
           <time className="text-xs opacity-50 ">{time}</time>
         </div>
-        <div className="chat-bubble bg-purple-900">{message?.message}</div>
+        <div className="chat-bubble bg-purple-900 flex flex-col gap-2">
+          {message?.mediaUrl && message?.mediaType === 'image' && (
+            <img 
+              src={message.mediaUrl} 
+              alt="attachment" 
+              className="max-w-[200px] sm:max-w-xs rounded-lg cursor-pointer hover:opacity-90"
+              onClick={() => window.open(message.mediaUrl, '_blank')}
+            />
+          )}
+          {message?.mediaUrl && message?.mediaType !== 'image' && (
+            <a 
+              href={message.mediaUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-purple-800 p-2 rounded text-white hover:bg-purple-700 transition-colors"
+            >
+              📄 View Document
+            </a>
+          )}
+          {message?.message && (
+            <span>{message.message}</span>
+          )}
+        </div>
       </div>  
     </div>
   );

@@ -14,7 +14,15 @@ const messageModel=new mongoose.Schema({
     },
     message:{
         type:String,
-        required:true
+        required:false // Optional now, since a message might just be a file
+    },
+    mediaUrl: {
+        type: String, // URL from Cloudinary
+        required: false
+    },
+    mediaType: {
+        type: String, // 'image', 'video', 'raw' (for documents)
+        required: false
     }
 },{timestamps:true})
 

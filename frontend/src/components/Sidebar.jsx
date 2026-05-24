@@ -6,89 +6,78 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { setAuthUser, setOtherUsers } from "../redux/userSlice";
-import { setSelectedUser } from "../redux/userSlice";
+import { setAuthUser, setSelectedUser } from "../redux/userSlice";
 import { setMessages } from "../redux/messageSlice";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-
   const [search, setSearch] = useState("");
-
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  const dispatch = useDispatch();
+  const { otherUsers } = useSelector((store) => store.user);
 
-  const dispatch=useDispatch();
+  const handleSearch = (e) => {
+    e.preventDefault();
 
-  const {otherUsers}=useSelector(store=>store.user);
+    if (!search.trim()) {
+      setFilteredUsers([]);
+      return;
+    }
 
+    const result = otherUsers.filter((user) =>
+      user.fullName.toLowerCase().includes(search.toLowerCase())
+    );
 
-  //search function
-const handleSearch = (e) => {
-  e.preventDefault();
-
-  if (!search.trim()) {
-    setFilteredUsers([]); // reset search
-    return;
-  }
-
-  const result = otherUsers.filter(user =>
-    user.fullName.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (result.length > 0) {
-    setFilteredUsers(result);
-  } else {
-    toast.error("User not found");
-  }
-};
-
+    result.length > 0
+      ? setFilteredUsers(result)
+      : toast.error("User not found");
+  };
 
   const handleLogout = async () => {
     try {
-      //axios with credential yha pe zaruri nhi coz middleware nhi pass krrhe isme
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`,
-          { withCredentials: true }
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`,
+        { withCredentials: true }
       );
-      
-      console.log(res);
-      toast.success(res.data.message);
 
-      //logout krne ke baad login page pe redirect krjao
+      toast.success(res.data.message);
       navigate("/login");
-       dispatch(setAuthUser(null));
-        dispatch(setSelectedUser(null));  // ✅ add this
-        dispatch(setMessages([]));        // ✅ add this
-        localStorage.removeItem("authUser"); // ✅ add this
+      dispatch(setAuthUser(null));
+      dispatch(setSelectedUser(null));
+      dispatch(setMessages([]));
+      localStorage.removeItem("authUser");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <div className="flex flex-col p-5 border border-r border-slate-500 w-[35%]">
-      <form onSubmit={handleSearch} className="flex">
+    <div className="flex flex-col p-4 sm:p-5 border-r border-slate-500 
+                    w-full md:w-[30%] lg:w-[25%] h-full overflow-y-auto">
+
+      <form onSubmit={handleSearch} className="flex w-full gap-2">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          type="text"
           placeholder="Search Users.."
-          className="border border-gray-500  bg-white/95 flex-1 p-1 text-gray-900 "
+          className="border border-gray-500 bg-white/95 flex-1 p-2 text-gray-900 rounded-md"
         />
         <button type="submit">
-          <IoSearch className=" text-white  size-8 cursor-pointer ml-1" />
+          <IoSearch className="text-white size-7 cursor-pointer" />
         </button>
       </form>
 
-      <div className="mt-5">
-        <hr className="border-black" />
-      </div>
+      <hr className="my-4 border-black" />
 
       <OtherUsers users={filteredUsers.length ? filteredUsers : otherUsers} />
 
-      <hr className="border-black" />
+      <hr className="border-black mt-3" />
+
       <button
         onClick={handleLogout}
-        className="bg-red-700 w-[40%] rounded-md mt-3 py-1 cursor-pointer text-white text-md hover:bg-red-800 duration-200 active:scale-95 "
+        className="bg-red-700 w-full sm:w-[60%] md:w-[50%] rounded-md mt-3 py-2 
+                   cursor-pointer text-white hover:bg-red-800 duration-200 active:scale-95"
       >
         Logout
       </button>

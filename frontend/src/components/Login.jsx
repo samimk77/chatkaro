@@ -55,7 +55,7 @@ const Login = () => {
   };
   return (
     <div className="text-white w-full h-screen flex items-center justify-center">
-      <div className="h-[60%] w-[30%] bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100 bg-transparent">
+      <div className="min-h-[60%] w-[90%] sm:w-[70%] md:w-[45%] lg:w-[30%] bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100 bg-transparent">
         <form onSubmit={handleSubmit} action="">
           <div className="flex flex-col ml-10 mt-3 gap-3">
             <div className="mb-5">

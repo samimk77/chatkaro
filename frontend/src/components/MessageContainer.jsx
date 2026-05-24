@@ -3,49 +3,53 @@ import SendInput from "./SendInput";
 import Messages from "./Messages";
 import { useDispatch, useSelector } from "react-redux";
 import { TiMessages } from "react-icons/ti";
+import { IoVideocam } from "react-icons/io5";
 import { setSelectedUser } from "../redux/userSlice";
+import { startCall } from "../redux/callSlice";
+
 const MessageContainer = () => {
- 
-  const {selectedUser,authUser}=useSelector(store=>store.user)
+  const { selectedUser, authUser } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
-  //logout krne ke baad bhi redux state me selecteduser ka value stored reh rha toh cleanup kro
+  useEffect(() => {
+    return () => dispatch(setSelectedUser(null));
+  }, []);
 
-  const dispatch=useDispatch();
-
-    useEffect(()=>{
-     return ()=>dispatch(setSelectedUser(null));
-   },[])
-  
   return (
-
     <>
-      {
-        selectedUser ? (<div className="flex flex-col w-[75%] relative ">
-      <div className="flex items-center p-3 text-white cursor-pointer bg-purple-950/45">
-        <div className="flex items-center pb-[2.5px] gap-2 ">
-          <img src={selectedUser?.profilePhoto} alt="user" className="w-12" />
-          <p className="flex ml-3">{selectedUser?.fullName}</p>
+      {selectedUser ? (
+        <div className="flex flex-col flex-1 w-full relative">
+          <div className="flex items-center p-3 text-white bg-purple-950/45">
+            <div className="flex items-center gap-2">
+              <img
+                src={selectedUser?.profilePhoto}
+                alt="user"
+                className="w-10 sm:w-12 rounded-full"
+              />
+              <p>{selectedUser?.fullName}</p>
+            </div>
+            <button 
+              onClick={() => dispatch(startCall())}
+              className="ml-auto bg-purple-600 hover:bg-purple-700 p-2 rounded-full text-white transition-colors"
+              title="Start Video Call"
+            >
+              <IoVideocam size={24} />
+            </button>
+          </div>
+
+          <hr className="border-black" />
+
+          <Messages />
+          <SendInput />
         </div>
-       
-      </div>
-       <hr className="border-black"/>
-       <Messages/>
-       <SendInput/>
-    </div>) : (
-
-   <div className="flex flex-col w-[75%] h-full items-center justify-center text-white gap-2 font-serif">
-   <h1  className="text-3xl font-md text-center">Hi {authUser?.fullName}</h1>
-  <h1 className="text-2xl font-md text-center">
-    Start Chatting !
-  </h1>
-
-  <TiMessages className="text-4xl mt-2" />
-</div>
-
-      )
-      }
+      ) : (
+        <div className="flex flex-col flex-1 items-center justify-center text-white gap-2 font-serif text-center px-4">
+          <h1 className="text-2xl sm:text-3xl">Hi {authUser?.fullName}</h1>
+          <h1 className="text-xl sm:text-2xl">Start Chatting !</h1>
+          <TiMessages className="text-4xl mt-2" />
+        </div>
+      )}
     </>
-    
   );
 };
 
