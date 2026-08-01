@@ -3,7 +3,7 @@ const cookieparser = require("cookie-parser");
 require("dotenv").config();
 const cors = require("cors");
 
-// ✅ import app and server from socket.js, don't create new ones
+// import app and server from socket.js, don't create new ones
 const { app, server } = require("./socket/socket");
 
 const PORT = process.env.PORT || 5000;
@@ -34,7 +34,7 @@ const messageRoutes = require("./routes/messageRoute");
 app.use("/api/v1/message", messageRoutes);
 
 
-// ✅ listen on server (not app) so socket.io works
+// listen on server (not app) so socket.io works
 server.listen(PORT, () => {
     console.log(`app running on port ${PORT}`);
 });

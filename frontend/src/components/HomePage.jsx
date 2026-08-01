@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import MessageContainer from "./MessageContainer";
-import VideoCall from "./VideoCall";
 
 const HomePage = () => {
   return (
@@ -24,7 +23,7 @@ const HomePage = () => {
         <MessageContainer />
       </div>
 
-      <VideoCall />
+
 
 
     </div>

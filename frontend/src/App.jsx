@@ -1,5 +1,5 @@
-import React, { useEffect,useState } from 'react'
-import { Route,Routes } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import Signup from './components/Signup'
 import Login from './components/Login'
 import HomePage from './components/HomePage'
@@ -7,42 +7,43 @@ import { useDispatch, useSelector } from 'react-redux'
 import {io} from "socket.io-client"
 import { setSocket } from './redux/socketSlice'
 import { setOnlineUsers } from './redux/userSlice'
-import { setIncomingCall, endCall } from './redux/callSlice'
 
 
 const App = () => {
   const {authUser}=useSelector(store=>store.user)
- const {socket} =useSelector(store=>store.socket)
+  const {socket} =useSelector(store=>store.socket)
   const dispatch =useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-useEffect(()=>{
-  if(authUser && !socket){
-    const newSocket = io(import.meta.env.VITE_BACKEND_URL,{
-      query:{ userId:authUser._id },
-      withCredentials:true
-    });
+  useEffect(() => {
+    if (!authUser) {
+      if (location.pathname !== '/login' && location.pathname !== '/signup') {
+        navigate('/login');
+      }
+    } else {
+      if (location.pathname === '/login' || location.pathname === '/signup') {
+        navigate('/');
+      }
+    }
+  }, [authUser, location.pathname, navigate]);
 
-    dispatch(setSocket(newSocket));
+  useEffect(()=>{
+    if(authUser && !socket){
+      const newSocket = io(import.meta.env.VITE_BACKEND_URL,{
+        query:{ userId:authUser._id },
+        withCredentials:true
+      });
 
-    newSocket.on("getOnlineUsers",(onlineUsers)=>{
-      dispatch(setOnlineUsers(onlineUsers));
-    });
+      dispatch(setSocket(newSocket));
 
-    newSocket.on("incomingCall", (data) => {
-      dispatch(setIncomingCall(data));
-    });
+      newSocket.on("getOnlineUsers",(onlineUsers)=>{
+        dispatch(setOnlineUsers(onlineUsers));
+      });
 
-    newSocket.on("endCall", () => {
-      dispatch(endCall());
-    });
-    
-    newSocket.on("callRejected", () => {
-      dispatch(endCall());
-    });
-
-    return ()=> newSocket.close();
-  }
-},[authUser]);
+      return ()=> newSocket.close();
+    }
+  },[authUser]);
 
   return (
   <Routes>

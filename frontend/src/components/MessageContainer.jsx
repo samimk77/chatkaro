@@ -3,9 +3,7 @@ import SendInput from "./SendInput";
 import Messages from "./Messages";
 import { useDispatch, useSelector } from "react-redux";
 import { TiMessages } from "react-icons/ti";
-import { IoVideocam } from "react-icons/io5";
 import { setSelectedUser } from "../redux/userSlice";
-import { startCall } from "../redux/callSlice";
 
 const MessageContainer = () => {
   const { selectedUser, authUser } = useSelector((store) => store.user);
@@ -28,13 +26,7 @@ const MessageContainer = () => {
               />
               <p>{selectedUser?.fullName}</p>
             </div>
-            <button 
-              onClick={() => dispatch(startCall())}
-              className="ml-auto bg-purple-600 hover:bg-purple-700 p-2 rounded-full text-white transition-colors"
-              title="Start Video Call"
-            >
-              <IoVideocam size={24} />
-            </button>
+
           </div>
 
           <hr className="border-black" />

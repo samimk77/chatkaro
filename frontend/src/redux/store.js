@@ -2,7 +2,6 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import userReducer from "./userSlice.js";
 import messageReducer from "./messageSlice.js";
 import socketReducer from "./socketSlice.js";
-import callReducer from "./callSlice.js";
 import {
     persistReducer,
     FLUSH,
@@ -18,14 +17,13 @@ import {
     key: 'root',
     version: 1,
     storage,
-    blacklist: ["socket", "call"]   // ⭐ ADD THIS LINE
+    blacklist: ["socket"]
   }
 
   const rootReducer = combineReducers({
     user:userReducer,
     message:messageReducer,
-    socket:socketReducer,
-    call:callReducer
+    socket:socketReducer
  })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

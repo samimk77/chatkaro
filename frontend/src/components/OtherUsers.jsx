@@ -8,7 +8,7 @@ const OtherUsers = ({ users }) => {
 
   const { otherUsers } = useSelector((store) => store.user);
 
-  // ⭐ Ensure displayUsers is always an array
+  //  Ensure displayUsers is always an array
   const displayUsers =
     Array.isArray(users) && users.length
       ? users
