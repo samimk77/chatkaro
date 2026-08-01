@@ -107,7 +107,7 @@ exports.getMessage=async(req,res)=>{
         
     } catch (error) {
         console.log(error);
-        res.staus(400).json({
+        res.status(400).json({
             message:"cannot retrive the message"
         })
         
